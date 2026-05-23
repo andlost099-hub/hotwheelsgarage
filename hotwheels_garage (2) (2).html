@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hot Wheels Garage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --yellow: #FFD000;
+      --red: #E71919;
+      --dark: #07142d;
+      --darker: #040d1e;
+    }
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--darker);
+      color: white;
+      min-height: 100vh;
+    }
+    header {
+      background: var(--dark);
+      border-bottom: 3px solid var(--yellow);
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      color: var(--yellow);
+      letter-spacing: 2px;
+    }
+    .logo span { color: white; }
+    nav a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      margin-left: 28px;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--yellow); }
+    .hero {
+      background: linear-gradient(135deg, #07142d 0%, #0d2060 50%, #1a0a0a 100%);
+      padding: 80px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(231,25,25,0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 50%, rgba(255,208,0,0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--red);
+      color: var(--yellow);
+      padding: 6px 20px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 96px;
+      line-height: 0.9;
+      letter-spacing: 4px;
+      margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--yellow); }
+    .hero p {
+      font-size: 18px;
+      color: rgba(255,255,255,0.65);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .controls {
+      max-width: 1200px;
+      margin: 40px auto 0;
+      padding: 0 40px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .controls input, .controls select {
+      background: rgba(255,255,255,0.06);
+      border: 1.5px solid rgba(255,208,0,0.25);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .controls input { flex: 1; min-width: 200px; }
+    .controls input::placeholder { color: rgba(255,255,255,0.35); }
+    .controls input:focus, .controls select:focus { border-color: var(--yellow); }
+    .controls select option { background: var(--dark); }
+    .count-text {
+      margin-left: auto;
+      color: rgba(255,255,255,0.45);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .catalog {
+      max-width: 1200px;
+      margin: 32px auto 80px;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 28px;
+    }
+    .card {
+      background: var(--dark);
+      border: 1.5px solid rgba(255,208,0,0.2);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--yellow);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(255,208,0,0.1);
+    }
+    .card-img-wrap {
+      position: relative;
+      overflow: hidden;
+      height: 200px;
+      background: #0d1f45;
+    }
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+    .card:hover .card-img-wrap img { transform: scale(1.05); }
+    .real-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--red);
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .card-body { padding: 18px; flex: 1; display: flex; flex-direction: column; }
+    .card-series {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 8px;
+    }
+    .card-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+      line-height: 1.4;
+      flex: 1;
+      margin-bottom: 14px;
+    }
+    .card-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 34px;
+      color: var(--yellow);
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+    .card-price span {
+      font-family: 'Barlow', sans-serif;
+      font-size: 16px;
+      color: rgba(255,255,255,0.4);
+      font-weight: 600;
+    }
+    .btn-amazon {
+      display: block;
+      background: var(--yellow);
+      color: var(--darker);
+      text-align: center;
+      text-decoration: none;
+      padding: 12px 8px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      transition: opacity 0.2s;
+    }
+    .btn-amazon:hover { opacity: 0.85; }
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: rgba(255,255,255,0.3);
+    }
+    .empty h3 { font-size: 24px; margin-bottom: 8px; }
+    footer {
+      background: var(--dark);
+      border-top: 2px solid rgba(255,208,0,0.15);
+      text-align: center;
+      padding: 40px;
+      color: rgba(255,255,255,0.4);
+      font-size: 14px;
+    }
+    footer strong { color: var(--yellow); }
+    @media (max-width: 768px) {
+      header { padding: 14px 20px; }
+      nav { display: none; }
+      .hero { padding: 50px 20px; }
+      .hero h1 { font-size: 60px; }
+      .controls { padding: 0 20px; }
+      .catalog { padding: 0 20px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">🔥 Hot Wheels <span>Garage</span></div>
+    <nav>
+      <a href="#shop">Shop</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-badge">Real Amazon Products</div>
+    <h1>Hot Wheels<br><span>Garage</span></h1>
+    <p>Authentic die-cast cars with direct Amazon links. Every product is real and available right now.</p>
+  </section>
+
+  <div class="controls" id="shop">
+    <input id="searchInput" placeholder="Search cars..." />
+    <select id="brandSelect">
+      <option value="All">All Brands</option>
+      <option>Dodge</option>
+      <option>Ford</option>
+      <option>Toyota</option>
+      <option>BMW</option>
+      <option>Lamborghini</option>
+      <option>Audi</option>
+      <option>Mercedes-Benz</option>
+    </select>
+    <span class="count-text" id="countText"></span>
+  </div>
+
+  <section class="catalog" id="catalog"></section>
+
+  <footer id="contact">
+    <strong>Hot Wheels Garage</strong>
+    <p style="margin-top:8px;">All products link directly to Amazon India. Prices may vary.</p>
+  </footer>
+
+  <script>
+    const cars = [
+      {
+        id: 1,
+        brand: "Dodge",
+        name: "Hot Wheels 70 Dodge Hemi Challenger Nightspeed 4/10 (Black)",
+        series: "Nightspeed Series",
+        price: 349,
+        amazonLink: "https://amzn.to/3RRy30O",
+        image: "https://m.media-amazon.com/images/I/71Yrwx-GzjL._SL1462_.jpg"
+      },
+      {
+        id: 2,
+        brand: "Ford",
+        name: "Hot Wheels Premium Car Culture 1:64 Scale Die-Cast 99 Ford F150 SVT Lightning, Eurospeed with Real Riders Tires",
+        series: "Car Culture Premium",
+        price: 704,
+        amazonLink: "https://amzn.to/4urMjvV",
+        image: "https://m.media-amazon.com/images/I/614tDC9AcKL._SL1024_.jpg"
+      },
+      {
+        id: 3,
+        brand: "Toyota",
+        name: "Hot Wheels 20 Toyota GR Supra 6/10 (Silver)",
+        series: "HW Speed Graphics",
+        price: 599,
+        amazonLink: "https://amzn.to/4dolDpO",
+        image: "https://m.media-amazon.com/images/I/71Did838fNL._SL1468_.jpg"
+      },
+      {
+        id: 4,
+        brand: "BMW",
+        name: "Hot Wheels BMW 635 CSI HW Euro 7/10 (White)",
+        series: "HW Euro",
+        price: 555,
+        amazonLink: "https://amzn.to/3RE9gxf",
+        image: "https://m.media-amazon.com/images/I/71ugYmq6M1L._SL1421_.jpg"
+      }
+    ];
+
+    function renderCars() {
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      const brand = document.getElementById("brandSelect").value;
+      const catalog = document.getElementById("catalog");
+
+      const filtered = cars.filter(car => {
+        const text = `${car.name} ${car.brand} ${car.series}`.toLowerCase();
+        return text.includes(search) && (brand === "All" || car.brand === brand);
+      });
+
+      document.getElementById("countText").textContent = `${filtered.length} product${filtered.length !== 1 ? 's' : ''} found`;
+
+      if (filtered.length === 0) {
+        catalog.innerHTML = `<div class="empty"><h3>No cars found</h3><p>Try a different search</p></div>`;
+        return;
+      }
+
+      catalog.innerHTML = filtered.map(car => `
+        <article class="card">
+          <div class="card-img-wrap">
+            <img src="${car.image}" alt="${car.name}" loading="lazy">
+            <span class="real-badge">Real Product</span>
+          </div>
+          <div class="card-body">
+            <div class="card-series">${car.series}</div>
+            <div class="card-name">${car.name}</div>
+            <div class="card-price">₹${car.price} <span>INR</span></div>
+            <a class="btn-amazon" href="${car.amazonLink}" target="_blank">Buy on Amazon</a>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    document.getElementById("searchInput").addEventListener("input", renderCars);
+    document.getElementById("brandSelect").addEventListener("change", renderCars);
+    renderCars();
+  </script>
+</body>
+</html>
